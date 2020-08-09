@@ -18,22 +18,10 @@ namespace CensusAnalyserProblemStatement
         public int loadCensusData(string filePath)
         {
 
-            string[] lines;
+            string[] lines; 
             try
             {
-                if (!Path.GetExtension(filePath).Contains(".csv"))
-                {
-                    throw new CensusAnalyserException("Invalid file type",
-                        CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
-                }
-
-                lines = File.ReadAllLines(filePath);
-
-                if (!lines[0].Contains(headers))
-                {
-                    throw new CensusAnalyserException("Header is Not Correct",CensusAnalyserException.ExceptionType.INCORRECT_HEADER);
-                }
-
+                lines=loadCsvFileInStringArray(filePath,headers);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
@@ -50,7 +38,8 @@ namespace CensusAnalyserProblemStatement
             }
             
             indianCensusDatas = indianCensusDataList.AsEnumerable();
-            return indianCensusDatas.Count();
+           // return indianCensusDatas.Count();
+            return indianCensusDataList.Count;
         }
 
         public int loadSateCodeData(string filePath)
@@ -58,19 +47,7 @@ namespace CensusAnalyserProblemStatement
             string[] lines;
             try
             {
-                if (!Path.GetExtension(filePath).Contains(".csv"))
-                {
-                    throw new CensusAnalyserException("Invalid file type",
-                        CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
-                }
-
-                lines = File.ReadAllLines(filePath);
-
-                if (!lines[0].Contains(headersOfStateCode))
-                {
-                    throw new CensusAnalyserException("Header is Not Correct", CensusAnalyserException.ExceptionType.INCORRECT_HEADER);
-                }
-
+                lines = loadCsvFileInStringArray(filePath, headersOfStateCode);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
@@ -89,6 +66,28 @@ namespace CensusAnalyserProblemStatement
 
           indianStateCodeDatas = indianStateCodeDataList.AsEnumerable();
             return indianStateCodeDatas.Count();
+        }
+
+
+        private string[] loadCsvFileInStringArray(string filePath,string header)
+        {
+
+            string[] lines;
+            if (!Path.GetExtension(filePath).Contains(".csv"))
+            {
+                throw new CensusAnalyserException("Invalid file type",
+                    CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
+            }
+
+            lines = File.ReadAllLines(filePath);
+
+            if (!lines[0].Contains(header))
+            {
+                throw new CensusAnalyserException("Header is Not Correct", CensusAnalyserException.ExceptionType.INCORRECT_HEADER);
+            }
+
+            return lines;
+
         }
     }
 }
