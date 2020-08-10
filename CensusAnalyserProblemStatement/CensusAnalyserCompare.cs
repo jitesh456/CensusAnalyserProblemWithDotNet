@@ -4,9 +4,9 @@ using System.Text;
 
 namespace CensusAnalyserProblemStatement
 {
-    class CensusAnalyserCompare : Comparer<IndianCensusDataCsv>
+    class CensusAnalyserCompare : Comparer<IndianCensusDao>
     {
-        public override int Compare(IndianCensusDataCsv x, IndianCensusDataCsv y)
+        public override int Compare(IndianCensusDao x, IndianCensusDao y)
         {
             return x.state.CompareTo(y.state);
         }

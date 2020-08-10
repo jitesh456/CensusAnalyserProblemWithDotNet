@@ -9,7 +9,7 @@ namespace CensusAnalyserProblemStatement
 {
     public class AnalyseCensusData
     {
-        Dictionary<string,IndianCensusDataCsv> indianCensusDatas = new Dictionary<string, IndianCensusDataCsv>();
+        Dictionary<string,IndianCensusDao> indianCensusDatas = new Dictionary<string,IndianCensusDao>();
         Dictionary<string,IndianStateCodeCsv> indianStateCodeDatas = new Dictionary<string, IndianStateCodeCsv>();
 
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
@@ -25,7 +25,7 @@ namespace CensusAnalyserProblemStatement
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    indianCensusDatas.Add(columns[0],new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3]));
+                    indianCensusDatas.Add(columns[0],new IndianCensusDao(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3])));
                 }
 
             }
@@ -68,7 +68,6 @@ namespace CensusAnalyserProblemStatement
 
         private string[] LoadCsvFileInStringArray(string filePath, string header)
         {
-
             string[] lines;
             if (!Path.GetExtension(filePath).EndsWith(".csv"))
             {
@@ -101,7 +100,5 @@ namespace CensusAnalyserProblemStatement
             indianStateCodeList.Sort(censusStateCodeCompare);
             return JsonConvert.SerializeObject(indianStateCodeList);
         }
-
-
     }
 }
