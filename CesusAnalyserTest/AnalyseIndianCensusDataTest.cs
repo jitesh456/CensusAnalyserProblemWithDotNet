@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using CensusAnalyserProblemStatement;
+using Newtonsoft.Json;
 
 namespace Tests
 {
@@ -135,6 +136,15 @@ namespace Tests
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INCORRECT_HEADER
                 , ex.exceptionType);
+        }
+
+        [Test]
+        public void givenCensusData_WhenCorrect_ShouldReturnSortedData()
+        {
+            analyseCensusData.loadCensusData(INDIAN_CENSUS_FILE_PATH);
+            string sortedCensusData = analyseCensusData.getSortedData();
+            IndianCensusDataCsv[] sortedData= JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
+            Assert.AreEqual("Andhra Pradesh", sortedData[0].state);
         }
 
 

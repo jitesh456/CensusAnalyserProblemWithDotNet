@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace CensusAnalyserProblemStatement
 {
     public class AnalyseCensusData
     {
         List<IndianCensusDataCsv> indianCensusDataList = new List<IndianCensusDataCsv>();
-        IEnumerable<IndianCensusDataCsv> indianCensusDatas;
         List<IndianStateCodeCsv> indianStateCodeDataList = new List<IndianStateCodeCsv>();
-        IEnumerable<IndianStateCodeCsv> indianStateCodeDatas;
+
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
         String headersOfStateCode = "SrNo,State Name,TIN,StateCode";
 
         public int loadCensusData(string filePath)
         {
 
-            string[] lines; 
+            string[] lines;
             try
             {
-                lines=loadCsvFileInStringArray(filePath,headers);
+                lines = loadCsvFileInStringArray(filePath, headers);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
@@ -36,9 +36,7 @@ namespace CensusAnalyserProblemStatement
             catch (IndexOutOfRangeException e) {
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
-            
-            indianCensusDatas = indianCensusDataList.AsEnumerable();
-           // return indianCensusDatas.Count();
+
             return indianCensusDataList.Count;
         }
 
@@ -64,12 +62,11 @@ namespace CensusAnalyserProblemStatement
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
 
-          indianStateCodeDatas = indianStateCodeDataList.AsEnumerable();
-            return indianStateCodeDatas.Count();
+            return indianStateCodeDataList.Count;
         }
 
 
-        private string[] loadCsvFileInStringArray(string filePath,string header)
+        private string[] loadCsvFileInStringArray(string filePath, string header)
         {
 
             string[] lines;
@@ -87,7 +84,14 @@ namespace CensusAnalyserProblemStatement
             }
 
             return lines;
-
         }
+
+        public string getSortedData()
+        {
+            CensusAnalyserCompare analyserCompare= new CensusAnalyserCompare();
+            indianCensusDataList.Sort(analyserCompare);
+            return JsonConvert.SerializeObject(indianCensusDataList);
+        }
+
     }
 }
