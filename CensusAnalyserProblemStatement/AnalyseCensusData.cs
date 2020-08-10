@@ -9,23 +9,23 @@ namespace CensusAnalyserProblemStatement
 {
     public class AnalyseCensusData
     {
-        List<IndianCensusDataCsv> indianCensusDataList = new List<IndianCensusDataCsv>();
-        List<IndianStateCodeCsv> indianStateCodeDataList = new List<IndianStateCodeCsv>();
+        Dictionary<string,IndianCensusDataCsv> indianCensusDatas = new Dictionary<string, IndianCensusDataCsv>();
+        Dictionary<string,IndianStateCodeCsv> indianStateCodeDatas = new Dictionary<string, IndianStateCodeCsv>();
 
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
         String headersOfStateCode = "SrNo,State Name,TIN,StateCode";
 
-        public int loadCensusData(string filePath)
+        public int LoadCensusData(string filePath)
         {
 
             string[] lines;
             try
             {
-                lines = loadCsvFileInStringArray(filePath, headers);
+                lines = LoadCsvFileInStringArray(filePath, headers);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    indianCensusDataList.Add(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3]));
+                    indianCensusDatas.Add(columns[0],new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3]));
                 }
 
             }
@@ -37,19 +37,19 @@ namespace CensusAnalyserProblemStatement
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
 
-            return indianCensusDataList.Count;
+            return indianCensusDatas.Count;
         }
 
-        public int loadSateCodeData(string filePath)
+        public int LoadSateCodeData(string filePath)
         {
             string[] lines;
             try
             {
-                lines = loadCsvFileInStringArray(filePath, headersOfStateCode);
+                lines = LoadCsvFileInStringArray(filePath, headersOfStateCode);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    indianStateCodeDataList.Add(new IndianStateCodeCsv(columns[0], columns[1], columns[2], columns[3]));
+                    indianStateCodeDatas.Add(columns[1],new IndianStateCodeCsv(columns[0], columns[1], columns[2], columns[3]));
                 }
 
             }
@@ -62,15 +62,15 @@ namespace CensusAnalyserProblemStatement
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
 
-            return indianStateCodeDataList.Count;
+            return indianStateCodeDatas.Count;
         }
 
 
-        private string[] loadCsvFileInStringArray(string filePath, string header)
+        private string[] LoadCsvFileInStringArray(string filePath, string header)
         {
 
             string[] lines;
-            if (!Path.GetExtension(filePath).Contains(".csv"))
+            if (!Path.GetExtension(filePath).EndsWith(".csv"))
             {
                 throw new CensusAnalyserException("Invalid file type",
                     CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
@@ -86,12 +86,22 @@ namespace CensusAnalyserProblemStatement
             return lines;
         }
 
-        public string getSortedData()
+        public string GetSortedData()
         {
             CensusAnalyserCompare analyserCompare= new CensusAnalyserCompare();
+            var indianCensusDataList = indianCensusDatas.Select(x => x.Value).ToList();
             indianCensusDataList.Sort(analyserCompare);
             return JsonConvert.SerializeObject(indianCensusDataList);
         }
+
+        public string GetSortedStateCodeData()
+        {
+            CensusStateCodeCompare censusStateCodeCompare = new CensusStateCodeCompare();
+            var indianStateCodeList=indianStateCodeDatas.Select(x=>x.Value).ToList();
+            indianStateCodeList.Sort(censusStateCodeCompare);
+            return JsonConvert.SerializeObject(indianStateCodeList);
+        }
+
 
     }
 }

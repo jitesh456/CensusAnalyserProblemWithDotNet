@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CensusAnalyserProblemStatement
 {
-    class IndianStateCodeCsv
+  public  class IndianStateCodeCsv
     {
         
         public int srNo;
