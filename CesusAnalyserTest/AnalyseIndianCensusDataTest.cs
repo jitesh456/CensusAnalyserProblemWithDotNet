@@ -139,7 +139,8 @@ namespace Tests
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedData()
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.STATE);
+            string sortedCensusData = analyseCensusData
+                .GetSortedData(CensusAnalyserCompare.SortByField.STATE,"ASE");
             IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
             Assert.AreEqual("Andhra Pradesh", sortedData[0].state);
         }
@@ -150,7 +151,8 @@ namespace Tests
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
             analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.STATE_CODE);
+            string sortedCensusData = analyseCensusData
+                .GetSortedData(CensusAnalyserCompare.SortByField.STATE_CODE,"ASE");
             IndianStateCodeCsv[] sortedData = JsonConvert.DeserializeObject<IndianStateCodeCsv[]>(sortedCensusData);
             Assert.AreEqual("AP", sortedData[0].stateCode);
         }
@@ -160,7 +162,8 @@ namespace Tests
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
             analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION);
+            string sortedCensusData = analyseCensusData
+                .GetSortedData(CensusAnalyserCompare.SortByField.POPULATION,"ASE");
             IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
             Assert.AreEqual(607688, sortedData[0].population);
         }
@@ -170,9 +173,21 @@ namespace Tests
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
             analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.DENSITY);
+            string sortedCensusData = analyseCensusData.
+                GetSortedData(CensusAnalyserCompare.SortByField.DENSITY,"DESC");
             IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
-            Assert.AreEqual(1102, sortedData[28].densityPerSqKm);
+            Assert.AreEqual(1102, sortedData[0].densityPerSqKm);
+        }
+
+        [Test]
+        public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToArea()
+        {
+            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
+            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = analyseCensusData.
+                GetSortedData(CensusAnalyserCompare.SortByField.AREA,"DESC");
+            IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
+            Assert.AreEqual(342239, sortedData[0].areaInSqKm);
         }
     }
 }

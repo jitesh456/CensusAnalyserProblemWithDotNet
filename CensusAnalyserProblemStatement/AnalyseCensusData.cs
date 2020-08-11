@@ -89,11 +89,15 @@ namespace CensusAnalyserProblemStatement
             return lines;
         }
 
-        public string GetSortedData(CensusAnalyserCompare.SortByField sortByField)
+        public string GetSortedData(CensusAnalyserCompare.SortByField sortByField,String order)
         {
             CensusAnalyserCompare analyserCompare= new CensusAnalyserCompare(sortByField);
             var indianCensusDataList = indianCensusDatas.Select(x => x.Value).ToList();
             indianCensusDataList.Sort(analyserCompare);
+            if (order.Equals("DESC")) {
+                indianCensusDataList.Reverse();
+            }
+            
             return JsonConvert.SerializeObject(indianCensusDataList);
         }
 
