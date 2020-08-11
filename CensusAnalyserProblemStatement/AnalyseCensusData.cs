@@ -10,8 +10,7 @@ namespace CensusAnalyserProblemStatement
     public class AnalyseCensusData
     {
         Dictionary<string,IndianCensusDao> indianCensusDatas = new Dictionary<string,IndianCensusDao>();
-        Dictionary<string,IndianStateCodeCsv> indianStateCodeDatas = new Dictionary<string, IndianStateCodeCsv>();
-
+        
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
         String headersOfStateCode = "SrNo,State Name,TIN,StateCode";
 
@@ -49,7 +48,12 @@ namespace CensusAnalyserProblemStatement
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    indianStateCodeDatas.Add(columns[1],new IndianStateCodeCsv(columns[0], columns[1], columns[2], columns[3]));
+                    foreach (var element in indianCensusDatas) {
+                        if (element.Key.Equals(columns[1])) {
+                            element.Value.stateCode = columns[3];
+                        }
+                    }
+                    
                 }
 
             }
@@ -62,7 +66,7 @@ namespace CensusAnalyserProblemStatement
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
 
-            return indianStateCodeDatas.Count;
+            return indianCensusDatas.Count;
         }
 
 
@@ -85,20 +89,13 @@ namespace CensusAnalyserProblemStatement
             return lines;
         }
 
-        public string GetSortedData()
+        public string GetSortedData(CensusAnalyserCompare.SortByField sortByField)
         {
-            CensusAnalyserCompare analyserCompare= new CensusAnalyserCompare();
+            CensusAnalyserCompare analyserCompare= new CensusAnalyserCompare(sortByField);
             var indianCensusDataList = indianCensusDatas.Select(x => x.Value).ToList();
             indianCensusDataList.Sort(analyserCompare);
             return JsonConvert.SerializeObject(indianCensusDataList);
         }
 
-        public string GetSortedStateCodeData()
-        {
-            CensusStateCodeCompare censusStateCodeCompare = new CensusStateCodeCompare();
-            var indianStateCodeList=indianStateCodeDatas.Select(x=>x.Value).ToList();
-            indianStateCodeList.Sort(censusStateCodeCompare);
-            return JsonConvert.SerializeObject(indianStateCodeList);
-        }
     }
 }

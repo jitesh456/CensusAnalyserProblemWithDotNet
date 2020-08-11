@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CensusAnalyserProblemStatement
 {
-    class IndianCensusDao
+   public  class IndianCensusDao
     {
         public string state;
         public long population;

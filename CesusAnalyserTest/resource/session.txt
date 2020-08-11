@@ -1,2 +1,0 @@
-Commit Formate
-"[Name] Add/Refactor/Delete: message"

@@ -87,8 +87,9 @@ namespace Tests
         [Test]
         public void GivenIndainStateCodedata_WhenCorrect_ShouldReturnTotalCount()
         {
+            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
             int actualCount=analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            Assert.AreEqual(37, actualCount);
+            Assert.AreEqual(29, actualCount);
 
         }
 
@@ -124,16 +125,6 @@ namespace Tests
         }
 
         [Test]
-        public void GivenStateCensusFile_WhenIncorrectDelimeter_ShouldProperException()
-        {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadSateCodeData(INDIA_STATE_CODE_FILE_INCORRECT_DELIMETER));
-            Assert.AreEqual(CensusAnalyserException
-                .ExceptionType.WRONG_FILE_DELIMETER
-                , ex.exceptionType);
-        }
-
-        [Test]
         public void GivenStateCensusFile_WhenIncorrectHeaderShouldProperException()
         {
             var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
@@ -147,7 +138,7 @@ namespace Tests
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedData()
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            string sortedCensusData = analyseCensusData.GetSortedData();
+            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.STATE);
             IndianCensusDataCsv[] sortedData= JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
             Assert.AreEqual("Andhra Pradesh", sortedData[0].state);
         }
@@ -156,10 +147,11 @@ namespace Tests
         [Test]
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToStateCode()
         {
+            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
             analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData.GetSortedStateCodeData();
+            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.STATE_CODE);
             IndianStateCodeCsv[] sortedData = JsonConvert.DeserializeObject<IndianStateCodeCsv[]>(sortedCensusData);
-            Assert.AreEqual("AD", sortedData[0].stateCode);
+            Assert.AreEqual("AP", sortedData[0].stateCode);
         }
 
     }
