@@ -34,15 +34,16 @@ namespace Tests
         }
 
         [Test]
-        public void GivenCensusDataFilePath_WhenNotProper_ShouldProperException() {
-            var ex = Assert.Throws<CensusAnalyserException>(()=>analyseCensusData.
+        public void GivenCensusDataFilePath_WhenNotProper_ShouldProperException()
+        {
+            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
             LoadCensusData(INDIAN_CENSUS_FILE_PATH_INCORRECT));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.FILE_NOT_FOUND
                 , ex.exceptionType);
         }
 
-        
+
         [Test]
         public void GivenCensusDataFilePath_WhenFilePathEmpty_ShouldProperException()
         {
@@ -88,7 +89,7 @@ namespace Tests
         public void GivenIndainStateCodedata_WhenCorrect_ShouldReturnTotalCount()
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            int actualCount=analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
+            int actualCount = analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
             Assert.AreEqual(29, actualCount);
 
         }
@@ -139,7 +140,7 @@ namespace Tests
         {
             analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
             string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.STATE);
-            IndianCensusDataCsv[] sortedData= JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
+            IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
             Assert.AreEqual("Andhra Pradesh", sortedData[0].state);
         }
 
@@ -162,6 +163,16 @@ namespace Tests
             string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION);
             IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
             Assert.AreEqual(607688, sortedData[0].population);
+        }
+
+        [Test]
+        public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToDensity()
+        {
+            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
+            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.DENSITY);
+            IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
+            Assert.AreEqual(1102, sortedData[28].densityPerSqKm);
         }
     }
 }

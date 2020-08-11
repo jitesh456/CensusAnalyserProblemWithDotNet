@@ -11,6 +11,7 @@ namespace CensusAnalyserProblemStatement
             STATE,
             STATE_CODE,
             POPULATION,
+            DENSITY,
         }
 
         public SortByField compareByField;
@@ -29,6 +30,8 @@ namespace CensusAnalyserProblemStatement
                     return x.stateCode.CompareTo(y.stateCode);
                 case SortByField.POPULATION:
                     return x.population.CompareTo(y.population);
+                case SortByField.DENSITY:
+                    return x.densityPerSqKm.CompareTo(y.densityPerSqKm);
                 default:
                     break;
             }
