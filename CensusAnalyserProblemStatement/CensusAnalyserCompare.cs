@@ -10,6 +10,7 @@ namespace CensusAnalyserProblemStatement
         {
             STATE,
             STATE_CODE,
+            POPULATION,
         }
 
         public SortByField compareByField;
@@ -26,6 +27,8 @@ namespace CensusAnalyserProblemStatement
                     return x.state.CompareTo(y.state);
                 case SortByField.STATE_CODE:
                     return x.stateCode.CompareTo(y.stateCode);
+                case SortByField.POPULATION:
+                    return x.population.CompareTo(y.population);
                 default:
                     break;
             }

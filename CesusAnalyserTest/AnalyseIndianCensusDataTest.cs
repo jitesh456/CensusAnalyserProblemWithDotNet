@@ -154,5 +154,14 @@ namespace Tests
             Assert.AreEqual("AP", sortedData[0].stateCode);
         }
 
+        [Test]
+        public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToPopulation()
+        {
+            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
+            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = analyseCensusData.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION);
+            IndianCensusDataCsv[] sortedData = JsonConvert.DeserializeObject<IndianCensusDataCsv[]>(sortedCensusData);
+            Assert.AreEqual(607688, sortedData[0].population);
+        }
     }
 }
