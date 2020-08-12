@@ -66,7 +66,7 @@ namespace CesusAnalyserTest
         [Test]
         public void GivenUsCensusDataFilePath_WhenFileDelimeterIncorrect_ShouldProperException()
         {
-            var ex  =Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH_INCORRECT_FILE_DELIMETER));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH_INCORRECT_FILE_DELIMETER));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.WRONG_FILE_DELIMETER
                 , ex.exceptionType);
@@ -82,12 +82,74 @@ namespace CesusAnalyserTest
         }
 
         [Test]
-        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToPopulation() {
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToPopulation()
+        {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION, "DESC");
             CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
-            Assert.AreEqual(342239, sortedData[0].population);
+            Assert.AreEqual(37253956, sortedData[0].population);
+        }
 
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToState()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.STATE, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual("Wyoming", sortedData[0].state);
+        }
+
+
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToArea()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.AREA, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual(1723338, sortedData[0].areaInSqKm);
+        }
+
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToStateCode()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.STATE_CODE, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual("WY", sortedData[0].stateCode);
+        }
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToLandArea()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.LAND_AREA, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual( 403466.62m, sortedData[0].landArea);
+        }
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToPopulationDesnity()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION_DENSITY, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual(3805.61m, sortedData[0].populationDensity);
+        }
+
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToWaterArea()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.WATER_AREA, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual(20501.12m, sortedData[0].waterArea);
+        }
+
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToHousingUnit()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.HOUSING_UNIT, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual(13680081, sortedData[0].housingUnit);
         }
     }
 }

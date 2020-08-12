@@ -13,7 +13,11 @@ namespace CensusAnalyserProblemStatement
             POPULATION,
             DENSITY,
             AREA,
-        }
+            HOUSING_UNIT,
+            POPULATION_DENSITY,
+            LAND_AREA,
+            WATER_AREA,
+    }
 
         public SortByField compareByField;
 
@@ -35,6 +39,14 @@ namespace CensusAnalyserProblemStatement
                     return x.densityPerSqKm.CompareTo(y.densityPerSqKm);
                 case SortByField.AREA:
                     return x.areaInSqKm.CompareTo(y.areaInSqKm);
+                case SortByField.HOUSING_UNIT:
+                    return x.housingUnit.CompareTo(y.housingUnit);
+                case SortByField.POPULATION_DENSITY:
+                    return x.populationDensity.CompareTo(y.populationDensity);
+                case SortByField.LAND_AREA:
+                    return x.housingUnit.CompareTo(y.housingUnit);
+                case SortByField.WATER_AREA:
+                    return x.housingUnit.CompareTo(y.housingUnit);
                 default:
                     break;
             }

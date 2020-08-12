@@ -11,6 +11,10 @@ namespace CensusAnalyserProblemStatement
         public long areaInSqKm;
         public long densityPerSqKm;
         public string stateCode;
+        public decimal waterArea;
+        public decimal landArea;
+        public decimal populationDensity;
+        public long housingUnit;
 
         public CensusDao()
         { }
@@ -27,7 +31,12 @@ namespace CensusAnalyserProblemStatement
             population = usCensus.population;
             areaInSqKm = Convert.ToInt32(usCensus.totalArea);
             densityPerSqKm =Convert.ToInt32(usCensus.housingDensity);
-            state = usCensus.stateId;
+            stateCode = usCensus.stateId;
+            waterArea = usCensus.waterArea;
+            landArea = usCensus.landArea;
+            populationDensity = usCensus.populationDensity;
+            housingUnit = usCensus.housingUnit;
+            
         }
 
 
