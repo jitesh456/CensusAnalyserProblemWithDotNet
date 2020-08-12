@@ -80,7 +80,14 @@ namespace CesusAnalyserTest
                 .ExceptionType.INCORRECT_HEADER
                 , ex.exceptionType);
         }
-        
 
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnSortedDataAccourdingToPopulation() {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION, "DESC");
+            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            Assert.AreEqual(342239, sortedData[0].population);
+
+        }
     }
 }
