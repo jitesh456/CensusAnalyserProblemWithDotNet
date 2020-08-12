@@ -7,25 +7,27 @@ using Newtonsoft.Json;
 
 namespace CensusAnalyserProblemStatement
 {
-    public class AnalyseCensusData:CensusAdapter
+    public class IndianCensusClass:CensusAdapter
     {
         Dictionary<string,CensusDao> indianCensusDatas = new Dictionary<string,CensusDao>();
         
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
         String headersOfStateCode = "SrNo,State Name,TIN,StateCode";
 
-        public int LoadCensusData(string filePath)
+        public Dictionary<string, CensusDao>  LoadCensusData(params string[] filePath)
         {
 
             string[] lines;
             try
             {
-                lines = base.LoadCsvFileInStringArray(filePath, headers);
+                lines = base.LoadCsvFileInStringArray(filePath[0], headers);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
                     indianCensusDatas.Add(columns[0],new CensusDao(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3])));
                 }
+                if(filePath.Count()>1)
+                    LoadSateCodeData(filePath[1]);
 
             }
             catch (FileNotFoundException e)
@@ -36,7 +38,7 @@ namespace CensusAnalyserProblemStatement
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
 
-            return indianCensusDatas.Count;
+            return indianCensusDatas;
         }
 
         public int LoadSateCodeData(string filePath)
@@ -69,17 +71,7 @@ namespace CensusAnalyserProblemStatement
         }
 
 
-        public string GetSortedData(CensusAnalyserCompare.SortByField sortByField,String order)
-        {
-            CensusAnalyserCompare analyserCompare= new CensusAnalyserCompare(sortByField);
-            var indianCensusDataList = indianCensusDatas.Select(x => x.Value).ToList();
-            indianCensusDataList.Sort(analyserCompare);
-            if (order.Equals("DESC")) {
-                indianCensusDataList.Reverse();
-            }
-            
-            return JsonConvert.SerializeObject(indianCensusDataList);
-        }
+        
 
     }
 }

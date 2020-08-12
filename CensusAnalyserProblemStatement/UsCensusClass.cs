@@ -11,7 +11,7 @@ namespace CensusAnalyserProblemStatement
         Dictionary<string, CensusDao> censusData = new Dictionary<string, CensusDao>();
 
         readonly string headers = "State Id,State,Population,Housing units,Total area,Water area,Land area,Population Density,Housing Density";
-        public int LoadCensusData(string filePath)
+        public Dictionary<String,CensusDao> LoadCensusData(string filePath)
         {
             string[] lines;
             try
@@ -34,7 +34,7 @@ namespace CensusAnalyserProblemStatement
                 throw new CensusAnalyserException(e.Message, CensusAnalyserException.ExceptionType.WRONG_FILE_DELIMETER);
             }
 
-            return censusData.Count;
+            return censusData;
         }
     }
 }

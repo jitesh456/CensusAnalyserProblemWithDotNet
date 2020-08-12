@@ -18,26 +18,26 @@ namespace Tests
         private readonly string INDIA_STATE_CODE_FILE_INCORRECT_HEADER = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\resource\\IndiaStateCodeIncorrectHeader.csv";
 
 
-        AnalyseCensusData analyseCensusData;
+        CensusAnalyser censusAnalyser;
 
         [SetUp]
         public void Setup()
         {
-            analyseCensusData = new AnalyseCensusData();
+            censusAnalyser = new CensusAnalyser();
         }
 
         [Test]
         public void GivenCensusDataFilePath_WhenProper_ShouldReturn_AllRecordCount()
         {
-            int actualResult = analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
+            int actualResult = censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA,INDIAN_CENSUS_FILE_PATH);
             Assert.AreEqual(29, actualResult);
         }
 
         [Test]
         public void GivenCensusDataFilePath_WhenNotProper_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadCensusData(INDIAN_CENSUS_FILE_PATH_INCORRECT));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH_INCORRECT));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.FILE_NOT_FOUND
                 , ex.exceptionType);
@@ -48,7 +48,7 @@ namespace Tests
         public void GivenCensusDataFilePath_WhenFilePathEmpty_ShouldProperException()
         {
 
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.LoadCensusData(""));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, ""));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INVALID_FILE_TYPE
                 , ex.exceptionType);
@@ -58,8 +58,8 @@ namespace Tests
         [Test]
         public void GivenCensusDataFilePath_WhenFieFormateIsIncorrect_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadCensusData(WRONG_INDIAN_CENSUS_FILE_FORMATE));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, WRONG_INDIAN_CENSUS_FILE_FORMATE));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INVALID_FILE_TYPE
                 , ex.exceptionType);
@@ -68,8 +68,8 @@ namespace Tests
         [Test]
         public void givenCensusDataFilePath_WhenFileDelimeterIncorrect_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadCensusData(WRONG_DELIMETER_INDIAN_CENSUS_FILE));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, WRONG_DELIMETER_INDIAN_CENSUS_FILE));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.WRONG_FILE_DELIMETER
                 , ex.exceptionType);
@@ -78,8 +78,8 @@ namespace Tests
         [Test]
         public void GivenCensusDataFilePath_WhenFileWithIncorrectHeader_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadCensusData(WRONG_HEADER_INDIAN_CENSUS_FILE));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA,WRONG_HEADER_INDIAN_CENSUS_FILE));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INCORRECT_HEADER
                 , ex.exceptionType);
@@ -88,17 +88,15 @@ namespace Tests
         [Test]
         public void GivenIndainStateCodedata_WhenCorrect_ShouldReturnTotalCount()
         {
-            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            int actualCount = analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
+            int actualCount = censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE);
             Assert.AreEqual(29, actualCount);
-
         }
 
         [Test]
         public void GivenStateCensusFile_WhenNotProper_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadSateCodeData(INDIAN_STATE_CODE_FILE_INVORRECT_PATH));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE_INVORRECT_PATH));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.FILE_NOT_FOUND
                 , ex.exceptionType);
@@ -108,8 +106,8 @@ namespace Tests
         [Test]
         public void GivenStateCensusFile_WhenEmptyFileName_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadSateCodeData(""));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, ""));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INVALID_FILE_TYPE
                 , ex.exceptionType);
@@ -118,8 +116,8 @@ namespace Tests
         [Test]
         public void GivenStateCensusFile_WhenIncorrectFormate_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadSateCodeData(INCORRECT_INDIAN_STATE_CODE_FILE_FORMATE));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INCORRECT_INDIAN_STATE_CODE_FILE_FORMATE));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INVALID_FILE_TYPE
                 , ex.exceptionType);
@@ -128,8 +126,8 @@ namespace Tests
         [Test]
         public void GivenStateCensusFile_WhenIncorrectHeaderShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => analyseCensusData.
-            LoadSateCodeData(INDIA_STATE_CODE_FILE_INCORRECT_HEADER));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIA_STATE_CODE_FILE_INCORRECT_HEADER));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INCORRECT_HEADER
                 , ex.exceptionType);
@@ -138,8 +136,8 @@ namespace Tests
         [Test]
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedData()
         {
-            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            string sortedCensusData = analyseCensusData
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH,INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = censusAnalyser
                 .GetSortedData(CensusAnalyserCompare.SortByField.STATE,"ASE");
             CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
             Assert.AreEqual("Andhra Pradesh", sortedData[0].state);
@@ -149,9 +147,8 @@ namespace Tests
         [Test]
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToStateCode()
         {
-            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = censusAnalyser
                 .GetSortedData(CensusAnalyserCompare.SortByField.STATE_CODE,"ASE");
             CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
             Assert.AreEqual("AP", sortedData[0].stateCode);
@@ -160,9 +157,8 @@ namespace Tests
         [Test]
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToPopulation()
         {
-            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = censusAnalyser
                 .GetSortedData(CensusAnalyserCompare.SortByField.POPULATION,"ASE");
             CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
             Assert.AreEqual(607688, sortedData[0].population);
@@ -171,9 +167,8 @@ namespace Tests
         [Test]
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToDensity()
         {
-            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData.
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = censusAnalyser.
                 GetSortedData(CensusAnalyserCompare.SortByField.DENSITY,"DESC");
             CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
             Assert.AreEqual(1102, sortedData[0].densityPerSqKm);
@@ -182,10 +177,8 @@ namespace Tests
         [Test]
         public void GivenCensusData_WhenCorrect_ShouldReturnSortedDataAccourdingToArea()
         {
-            analyseCensusData.LoadCensusData(INDIAN_CENSUS_FILE_PATH);
-            analyseCensusData.LoadSateCodeData(INDIAN_STATE_CODE_FILE);
-            string sortedCensusData = analyseCensusData.
-            GetSortedData(CensusAnalyserCompare.SortByField.AREA,"DESC");
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE);
+            string sortedCensusData =censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.AREA,"DESC");
             CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
             Assert.AreEqual(342239, sortedData[0].areaInSqKm);
         }

@@ -16,17 +16,17 @@ namespace CesusAnalyserTest
         private readonly string US_CENSUS_FILE_PATH_FORMATE_INCORRECT = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\resource\\USCensusData.txt";
         private readonly string US_CENSUS_FILE_PATH_INCORRECT = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\USCensusData.csv";
 
-        UsCensusClass usCensusClass;
+        CensusAnalyser censusAnalyser;
         [SetUp]
         public void Setup()
         {
-            usCensusClass = new UsCensusClass();
+            censusAnalyser = new CensusAnalyser();
         }
 
         [Test]
         public void givenUsCensusFile_WhenCorrect_ShouldReturnCount()
         {
-            int count = usCensusClass.LoadCensusData(US_CENSUS_FILE_PATH);
+            int count = censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             Assert.AreEqual(51, count);
 
         }
@@ -34,7 +34,8 @@ namespace CesusAnalyserTest
         [Test]
         public void GivenUsCensusDataFilePath_WhenNotProper_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => usCensusClass.LoadCensusData(US_CENSUS_FILE_PATH_INCORRECT));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH_INCORRECT));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.FILE_NOT_FOUND
                 , ex.exceptionType);
@@ -45,7 +46,8 @@ namespace CesusAnalyserTest
         public void GivenUsCensusDataFilePath_WhenFilePathEmpty_ShouldProperException()
         {
 
-            var ex = Assert.Throws<CensusAnalyserException>(() => usCensusClass.LoadCensusData(""));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.
+            LoadCensusData(CensusAnalyser.Country.US, ""));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INVALID_FILE_TYPE
                 , ex.exceptionType);
@@ -55,7 +57,7 @@ namespace CesusAnalyserTest
         [Test]
         public void GivenCensusDataFilePath_WhenFieFormateIsIncorrect_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => usCensusClass.LoadCensusData(US_CENSUS_FILE_PATH_FORMATE_INCORRECT));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH_FORMATE_INCORRECT));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INVALID_FILE_TYPE
                 , ex.exceptionType);
@@ -64,7 +66,7 @@ namespace CesusAnalyserTest
         [Test]
         public void GivenUsCensusDataFilePath_WhenFileDelimeterIncorrect_ShouldProperException()
         {
-            var ex  =Assert.Throws<CensusAnalyserException>(() => usCensusClass.LoadCensusData(US_CENSUS_FILE_PATH_INCORRECT_FILE_DELIMETER));
+            var ex  =Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH_INCORRECT_FILE_DELIMETER));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.WRONG_FILE_DELIMETER
                 , ex.exceptionType);
@@ -73,7 +75,7 @@ namespace CesusAnalyserTest
         [Test]
         public void GivenUsCensusDataFilePath_WhenFileWithIncorrectHeader_ShouldProperException()
         {
-            var ex = Assert.Throws<CensusAnalyserException>(() => usCensusClass.LoadCensusData(US_CENSUS_FILE_PATH_INCORRECT_HEADER));
+            var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH_INCORRECT_HEADER));
             Assert.AreEqual(CensusAnalyserException
                 .ExceptionType.INCORRECT_HEADER
                 , ex.exceptionType);
