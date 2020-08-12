@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CensusAnalyserProblemStatement
 {
-    public class AnalyseCensusData
+    public class AnalyseCensusData:CensusAdapter
     {
         Dictionary<string,CensusDao> indianCensusDatas = new Dictionary<string,CensusDao>();
         
@@ -20,7 +20,7 @@ namespace CensusAnalyserProblemStatement
             string[] lines;
             try
             {
-                lines = LoadCsvFileInStringArray(filePath, headers);
+                lines = base.LoadCsvFileInStringArray(filePath, headers);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
@@ -44,7 +44,7 @@ namespace CensusAnalyserProblemStatement
             string[] lines;
             try
             {
-                lines = LoadCsvFileInStringArray(filePath, headersOfStateCode);
+                lines = base.LoadCsvFileInStringArray(filePath, headersOfStateCode);
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
@@ -55,7 +55,6 @@ namespace CensusAnalyserProblemStatement
                     }
                     
                 }
-
             }
             catch (FileNotFoundException e)
             {
@@ -69,25 +68,6 @@ namespace CensusAnalyserProblemStatement
             return indianCensusDatas.Count;
         }
 
-
-        private string[] LoadCsvFileInStringArray(string filePath, string header)
-        {
-            string[] lines;
-            if (!Path.GetExtension(filePath).EndsWith(".csv"))
-            {
-                throw new CensusAnalyserException("Invalid file type",
-                    CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
-            }
-
-            lines = File.ReadAllLines(filePath);
-
-            if (!lines[0].Contains(header))
-            {
-                throw new CensusAnalyserException("Header is Not Correct", CensusAnalyserException.ExceptionType.INCORRECT_HEADER);
-            }
-
-            return lines;
-        }
 
         public string GetSortedData(CensusAnalyserCompare.SortByField sortByField,String order)
         {
