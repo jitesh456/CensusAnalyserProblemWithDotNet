@@ -9,7 +9,7 @@ namespace CensusAnalyserProblemStatement
 {
     public class AnalyseCensusData
     {
-        Dictionary<string,IndianCensusDao> indianCensusDatas = new Dictionary<string,IndianCensusDao>();
+        Dictionary<string,CensusDao> indianCensusDatas = new Dictionary<string,CensusDao>();
         
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
         String headersOfStateCode = "SrNo,State Name,TIN,StateCode";
@@ -24,7 +24,7 @@ namespace CensusAnalyserProblemStatement
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    indianCensusDatas.Add(columns[0],new IndianCensusDao(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3])));
+                    indianCensusDatas.Add(columns[0],new CensusDao(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3])));
                 }
 
             }

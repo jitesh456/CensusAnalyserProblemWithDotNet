@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CensusAnalyserProblemStatement
 {
-   public  class IndianCensusDao
+   public  class CensusDao
     {
         public string state;
         public long population;
@@ -12,12 +12,24 @@ namespace CensusAnalyserProblemStatement
         public long densityPerSqKm;
         public string stateCode;
 
-        public IndianCensusDao(IndianCensusDataCsv indianCensusData) {
+        public CensusDao()
+        { }
+
+        public CensusDao(IndianCensusDataCsv indianCensusData) {
             state = indianCensusData.state;
             population = indianCensusData.population;
             areaInSqKm = indianCensusData.areaInSqKm;
             densityPerSqKm = indianCensusData.densityPerSqKm;
         }
+        public CensusDao(UsCensusCsv usCensus)
+        {
+            state = usCensus.state;
+            population = usCensus.population;
+            areaInSqKm = Convert.ToInt32(usCensus.totalArea);
+            densityPerSqKm =Convert.ToInt32(usCensus.housingDensity);
+            state = usCensus.stateId;
+        }
+
 
     }
 }
