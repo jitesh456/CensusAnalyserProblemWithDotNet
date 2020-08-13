@@ -9,12 +9,12 @@ namespace CensusAnalyserProblemStatement
 {
     public class IndianCensusClass:CensusAdapter
     {
-        Dictionary<string,CensusDao> indianCensusDatas = new Dictionary<string,CensusDao>();
+        Dictionary<string,CensusDto> indianCensusDatas = new Dictionary<string,CensusDto>();
         
         String headers = "State,Population,AreaInSqKm,DensityPerSqKm";
         String headersOfStateCode = "SrNo,State Name,TIN,StateCode";
 
-        public Dictionary<string, CensusDao>  LoadCensusData(params string[] filePath)
+        public Dictionary<string, CensusDto>  LoadCensusData(params string[] filePath)
         {
 
             string[] lines;
@@ -24,7 +24,7 @@ namespace CensusAnalyserProblemStatement
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    indianCensusDatas.Add(columns[0],new CensusDao(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3])));
+                    indianCensusDatas.Add(columns[0],new CensusDto(new IndianCensusDataCsv(columns[0], columns[1], columns[2], columns[3])));
                 }
                 if(filePath.Count()>1)
                     LoadSateCodeData(filePath[1]);

@@ -12,7 +12,7 @@ namespace CensusAnalyserProblemStatement
             INDIA,US
         }
         
-        Dictionary<string, CensusDao> censusDatas = new Dictionary<string, CensusDao>();
+        Dictionary<string, CensusDto> censusDatas = new Dictionary<string, CensusDto>();
 
         public int LoadCensusData( Country country,params string[]  filePath)
         {

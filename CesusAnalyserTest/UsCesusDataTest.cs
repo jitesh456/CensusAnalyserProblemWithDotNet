@@ -15,6 +15,8 @@ namespace CesusAnalyserTest
         private readonly string US_CENSUS_FILE_PATH_INCORRECT_HEADER = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\resource\\USCensusDataIncorrectHeader.csv";
         private readonly string US_CENSUS_FILE_PATH_FORMATE_INCORRECT = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\resource\\USCensusData.txt";
         private readonly string US_CENSUS_FILE_PATH_INCORRECT = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\USCensusData.csv";
+        private readonly string INDIAN_CENSUS_FILE_PATH = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\resource\\IndiaStateCensusData.csv";
+        private readonly string INDIAN_STATE_CODE_FILE = "C:\\Users\\jites\\source\\repos\\CensusAnalyserProblemStatement\\CesusAnalyserTest\\resource\\IndiaStateCode.csv";
 
         CensusAnalyser censusAnalyser;
         [SetUp]
@@ -86,7 +88,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual(37253956, sortedData[0].population);
         }
 
@@ -95,7 +97,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.STATE, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual("Wyoming", sortedData[0].state);
         }
 
@@ -105,7 +107,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.AREA, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual(1723338, sortedData[0].areaInSqKm);
         }
 
@@ -114,7 +116,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.STATE_CODE, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual("WY", sortedData[0].stateCode);
         }
         [Test]
@@ -122,7 +124,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.LAND_AREA, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual( 403466.62m, sortedData[0].landArea);
         }
         [Test]
@@ -130,7 +132,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION_DENSITY, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual(3805.61m, sortedData[0].populationDensity);
         }
 
@@ -139,7 +141,7 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.WATER_AREA, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual(20501.12m, sortedData[0].waterArea);
         }
 
@@ -148,8 +150,26 @@ namespace CesusAnalyserTest
         {
             censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
             string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.HOUSING_UNIT, "DESC");
-            CensusDao[] sortedData = JsonConvert.DeserializeObject<CensusDao[]>(sortedCensusData);
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
             Assert.AreEqual(13680081, sortedData[0].housingUnit);
+        }
+
+        [Test]
+        public void GivenIndiaCensusDataFile_WhenCorrect_ShouldReturnMosPopulousStateAndDensityForIndia()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, INDIAN_CENSUS_FILE_PATH, INDIAN_STATE_CODE_FILE);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION, "DESC");
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
+            Assert.AreEqual("state:Uttar Pradesh Density:828", "state:" + sortedData[0].state + " Density:" + sortedData[0].densityPerSqKm);
+        }
+
+        [Test]
+        public void GivenUsCensusDataFile_WhenCorrect_ShouldReturnMosPopulousStateAndDensityForUs()
+        {
+            censusAnalyser.LoadCensusData(CensusAnalyser.Country.US, US_CENSUS_FILE_PATH);
+            string sortedCensusData = censusAnalyser.GetSortedData(CensusAnalyserCompare.SortByField.POPULATION, "DESC");
+            CensusDto[] sortedData = JsonConvert.DeserializeObject<CensusDto[]>(sortedCensusData);
+            Assert.AreEqual("state:California Density:34", "state:"+sortedData[0].state + " Density:" + sortedData[0].densityPerSqKm);
         }
     }
 }

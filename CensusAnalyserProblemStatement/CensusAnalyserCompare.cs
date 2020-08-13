@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CensusAnalyserProblemStatement
 {
-    public class CensusAnalyserCompare : Comparer<CensusDao>
+    public class CensusAnalyserCompare : Comparer<CensusDto>
     {
         public enum SortByField
         {
@@ -25,7 +25,7 @@ namespace CensusAnalyserProblemStatement
         {
             compareByField = sortByField;
         }
-        public override int Compare(CensusDao x, CensusDao y)
+        public override int Compare(CensusDto x, CensusDto y)
         {
             switch (compareByField) {
 

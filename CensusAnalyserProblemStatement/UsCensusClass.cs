@@ -8,10 +8,10 @@ namespace CensusAnalyserProblemStatement
 {
    public class UsCensusClass:CensusAdapter
     {
-        Dictionary<string, CensusDao> censusData = new Dictionary<string, CensusDao>();
+        Dictionary<string, CensusDto> censusData = new Dictionary<string, CensusDto>();
 
         readonly string headers = "State Id,State,Population,Housing units,Total area,Water area,Land area,Population Density,Housing Density";
-        public Dictionary<String,CensusDao> LoadCensusData(string filePath)
+        public Dictionary<String,CensusDto> LoadCensusData(string filePath)
         {
             string[] lines;
             try
@@ -20,7 +20,7 @@ namespace CensusAnalyserProblemStatement
                 foreach (string line in lines.Skip(1))
                 {
                     string[] columns = line.Split(',');
-                    censusData.Add(columns[0], new CensusDao(new UsCensusCsv(columns[0], columns[1], columns[2], columns[3]
+                    censusData.Add(columns[0], new CensusDto(new UsCensusCsv(columns[0], columns[1], columns[2], columns[3]
                         ,columns[4],columns[5],columns[6],columns[7],columns[8])));
                 }
 

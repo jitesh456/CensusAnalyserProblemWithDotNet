@@ -6,7 +6,7 @@ namespace CensusAnalyserProblemStatement
 {
     public class CensusAdapterFactory
     {
-        public Dictionary<string, CensusDao> LoadCesusData(CensusAnalyser.Country country, params string[] filePath) {
+        public Dictionary<string, CensusDto> LoadCesusData(CensusAnalyser.Country country, params string[] filePath) {
             switch (country) {
 
                 case CensusAnalyser.Country.INDIA:
